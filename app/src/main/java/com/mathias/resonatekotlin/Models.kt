@@ -3,7 +3,8 @@ package com.mathias.resonatekotlin
 import android.media.Image
 
 class SpotifyUser(val country: String = "", val display_name: String= "", val email: String = "", val href: String = "",
-            val id: String = "", val birthdate: String = "", val beschrijving: String="", val urlPf: String="", val Artists : List<Artist>)
+            val id: String = "", val birthdate: String = "", val beschrijving: String="", var urlPf: String="",
+                  var Artists : MutableList<Artist?> , var Genres: MutableList<Genre?> , var images: List<SpotifyData.Image>)
 
 
 class SpotifyData(val items: List<Item>){
@@ -14,7 +15,7 @@ class SpotifyData(val items: List<Item>){
 class Genre(val UserId: String, val GenreName:String)
 
 
-class Artist(val ArtistId: Int, val UserId: String, val ArtistName: String, val HrefSpotify: String, val UrlPf: String)
+class Artist(val UserId: String, val ArtistName: String, val HrefSpotify: String, val UrlPf: String)
 
 
 

@@ -45,7 +45,9 @@ class RegisterActivity : AppCompatActivity() {
                 etRegister_email.setText(user.email)
                 etRegister_dob.setText(user.birthdate)
 
-                LoadData()
+                user.urlPf = user.images[0].url.toString()
+
+                LoadData(user)
             }
             override fun onFailure(call: Call, e: IOException) {
                 println("Failed to get Spotify Data")
@@ -53,7 +55,7 @@ class RegisterActivity : AppCompatActivity() {
         })
     }
 
-    private fun LoadData() {
+    private fun LoadData(user:SpotifyUser) {
         val url = "https://api.spotify.com/v1/me/top/artists?time_range=medium_term&limit=3"
         val bearer = "Bearer " + intent.getStringExtra("BEARER")
         val client = OkHttpClient()
@@ -72,18 +74,25 @@ class RegisterActivity : AppCompatActivity() {
 
                 val genres: MutableList<String> = mutableListOf()
 
+                user.Genres = mutableListOf<Genre?>()
+                user.Artists = mutableListOf<Artist?>()
+
                 for(item in data.items){
                     for(genre in item.genres){
                         genres.add(genre)
+                        var genreUser = Genre(user.id, genre)
+                        user.Genres.add(genreUser)
                     }
+                    var artistUser = Artist(user.id, item.name, item.href ,item.images[0].url )
+                    user.Artists.add(artistUser)
                 }
-
-                //val adapterGenres = ArrayAdapter(this@RegisterActivity, android.R.layout.simple_list_item_1, genres)
 
                 runOnUiThread{
                     rvRegister_artist.adapter = RegisterArtistsAdapter(data)
                     gvRegister_genres.adapter = GenreAdapter(this@RegisterActivity, genres)
                 }
+
+                Log.d("User Object", user.toString())
             }
 
             override fun onFailure(call: Call, e: IOException) {
