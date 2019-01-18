@@ -6,35 +6,40 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.ImageView
 import android.widget.TextView
+import com.mathias.resonatekotlin.Artist
 import com.mathias.resonatekotlin.R
 import com.mathias.resonatekotlin.SwipeActivity
+import com.squareup.picasso.Picasso
 
-class GenreAdapter : BaseAdapter{
-
+class ArtistAdapter : BaseAdapter{
     var con: Context
-    var name: MutableList<String>
+    var artists: MutableList<Artist>
     private  var inflater: LayoutInflater
 
-    constructor(con:Context,name: MutableList<String>): super(){
-        this.name = name
+    constructor(con:Context, artists:MutableList<Artist>): super(){
         this.con = con
+        this.artists = artists
         inflater = con.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         var holder: Holder = Holder()
         var rv = View(con)
-        rv = inflater.inflate(R.layout.genre_grid_row, null)
+        rv = inflater.inflate(R.layout.artist_grid_row, null)
 
-        holder.tv = rv.findViewById(R.id.tvGenreGrid_name)
-        holder.tv.setText(name[position])
-        //Voor onclick listener :: http://www.youtube.com/watch?v=uT5STJuEj5Y
+        holder.tv = rv.findViewById(R.id.tvArtistGrid_name)
+        holder.tv.setText(artists[position].artistName)
+
+        holder.iv = rv.findViewById(R.id.ivAristGrid_image)
+        Picasso.get().load(artists[position].urlPf).into(holder.iv)
+
         rv.setOnClickListener(object : View.OnClickListener{
             override fun onClick(v: View?) {
                 val intent = Intent(v?.context, SwipeActivity::class.java)
-                intent.putExtra("SWIPE_VALUE", name[position])
-                intent.putExtra("SWIPE_METHODE", 2)
+                intent.putExtra("SWIPE_VALUE", artists[position].artistName)
+                intent.putExtra("SWIPE_METHODE", 1)
                 v?.context?.startActivity(intent)
             }
         })
@@ -50,10 +55,11 @@ class GenreAdapter : BaseAdapter{
     }
 
     override fun getCount(): Int {
-        return name.size
+        return artists.size
     }
 
     public class Holder{
-        lateinit var tv :TextView
+        lateinit var tv : TextView
+        lateinit var iv : ImageView
     }
 }

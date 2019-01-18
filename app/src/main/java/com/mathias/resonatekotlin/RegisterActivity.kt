@@ -1,5 +1,6 @@
 package com.mathias.resonatekotlin
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -12,10 +13,17 @@ import kotlinx.android.synthetic.main.activity_register.*
 import okhttp3.*
 import java.io.IOException
 import kotlin.math.log
+import com.google.gson.Gson
+
+
 
 class RegisterActivity : AppCompatActivity() {
 
-    //var user : SpotifyUser = SpotifyUser()
+    var Genres = mutableListOf<Genre?>()
+    var Artists = mutableListOf<Artist?>()
+    var Images = mutableListOf<SpotifyData.Image>()
+
+    var user : SpotifyUser = SpotifyUser(Artists = Artists, Genres = Genres, images = Images)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,6 +32,14 @@ class RegisterActivity : AppCompatActivity() {
         rvRegister_artist.layoutManager = LinearLayoutManager(this)
 
         fetchDataFromSpotify()
+
+        btnRegister_register.setOnClickListener{
+            //TODO Uncommnt dit in production
+            //RegisterUser()
+            //Navigeer naar Discover Page
+            var intent = Intent(this,DiscoverActivity::class.java)
+            this@RegisterActivity.startActivity(intent)
+        }
     }
 
     private fun fetchDataFromSpotify() {
@@ -38,16 +54,16 @@ class RegisterActivity : AppCompatActivity() {
             override fun onResponse(call: Call, response: Response) {
                 val body = response.body()?.string()
                 val gson = GsonBuilder().create()
-                val user = gson.fromJson(body, SpotifyUser::class.java)
+                user = gson.fromJson(body, SpotifyUser::class.java)
 
                 //Vullen text field
                 etRegister_name.setText(user.display_name)
                 etRegister_email.setText(user.email)
                 etRegister_dob.setText(user.birthdate)
 
-                user.urlPf = user.images[0].url.toString()
+                user.urlPf = user.images[0].url
 
-                LoadData(user)
+                LoadData()
             }
             override fun onFailure(call: Call, e: IOException) {
                 println("Failed to get Spotify Data")
@@ -55,7 +71,7 @@ class RegisterActivity : AppCompatActivity() {
         })
     }
 
-    private fun LoadData(user:SpotifyUser) {
+    private fun LoadData() {
         val url = "https://api.spotify.com/v1/me/top/artists?time_range=medium_term&limit=3"
         val bearer = "Bearer " + intent.getStringExtra("BEARER")
         val client = OkHttpClient()
@@ -67,7 +83,6 @@ class RegisterActivity : AppCompatActivity() {
             override fun onResponse(call: Call, response: Response) {
                 val body = response.body()?.string()
 
-                Log.d("response", body)
                 val gson = GsonBuilder().create()
 
                 val data = gson.fromJson(body, SpotifyData::class.java)
@@ -87,17 +102,42 @@ class RegisterActivity : AppCompatActivity() {
                     user.Artists.add(artistUser)
                 }
 
+                println(user.Artists)
+
                 runOnUiThread{
                     rvRegister_artist.adapter = RegisterArtistsAdapter(data)
                     gvRegister_genres.adapter = GenreAdapter(this@RegisterActivity, genres)
                 }
-
-                Log.d("User Object", user.toString())
             }
+
 
             override fun onFailure(call: Call, e: IOException) {
                 println("Failed to get spotify artists & genres")
             }
         })
+    }
+
+    private fun RegisterUser(){
+        var url = "https://resonateapi.azurewebsites.net/api/user"
+        val gson = Gson()
+        val json = gson.toJson(user)
+
+        val body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json)
+        val request = Request.Builder()
+            .url(url)
+            .post(body)
+            .build()
+
+        val client = OkHttpClient()
+
+        client.newCall(request).enqueue(object: Callback {
+            override fun onResponse(call: Call, response: Response) {
+                val body = response.body()?.string()
+            }
+            override fun onFailure(call: Call, e: IOException) {
+                println("Failed to register user!")
+            }
+        })
+
     }
 }
