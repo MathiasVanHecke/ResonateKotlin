@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
+import android.view.Window
 import android.widget.ArrayAdapter
 import com.google.gson.GsonBuilder
 import com.mathias.resonatekotlin.Adapters.GenreAdapter
@@ -18,14 +19,14 @@ import com.google.gson.Gson
 
 
 class RegisterActivity : AppCompatActivity() {
-
-    var Genres = mutableListOf<Genre?>()
-    var Artists = mutableListOf<Artist?>()
+    var Genres = mutableListOf<Genre>()
+    var Artists = mutableListOf<Artist>()
     var Images = mutableListOf<SpotifyData.Image>()
 
-    var user : SpotifyUser = SpotifyUser(Artists = Artists, Genres = Genres, images = Images)
+    var user : SpotifyUser = SpotifyUser(artists = Artists, genres = Genres, images = Images)
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
@@ -39,6 +40,9 @@ class RegisterActivity : AppCompatActivity() {
             //Navigeer naar Discover Page
             var intent = Intent(this,DiscoverActivity::class.java)
             this@RegisterActivity.startActivity(intent)
+
+            //Afsluiten thread
+            finish()
         }
     }
 
@@ -89,20 +93,18 @@ class RegisterActivity : AppCompatActivity() {
 
                 val genres: MutableList<String> = mutableListOf()
 
-                user.Genres = mutableListOf<Genre?>()
-                user.Artists = mutableListOf<Artist?>()
+                user.genres = mutableListOf<Genre>()
+                user.artists = mutableListOf<Artist>()
 
                 for(item in data.items){
                     for(genre in item.genres){
                         genres.add(genre)
                         var genreUser = Genre(user.id, genre)
-                        user.Genres.add(genreUser)
+                        user.genres.add(genreUser)
                     }
                     var artistUser = Artist(user.id, item.name, item.href ,item.images[0].url )
-                    user.Artists.add(artistUser)
+                    user.artists.add(artistUser)
                 }
-
-                println(user.Artists)
 
                 runOnUiThread{
                     rvRegister_artist.adapter = RegisterArtistsAdapter(data)

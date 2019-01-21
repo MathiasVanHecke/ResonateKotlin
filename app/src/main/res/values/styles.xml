@@ -3,10 +3,14 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/ResonateBlack</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:statusBarColor">@color/ResonateGrey</item>
+        <item name="android:colorBackground">@color/ResonateBlack</item>
     </style>
 
+    <style name="AppThemeTitle" parent="AppTheme">
+        <item name="android:windowNoTitle">false</item>
+    </style>
 </resources>

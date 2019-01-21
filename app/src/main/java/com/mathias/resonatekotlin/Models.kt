@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 class SpotifyUser(val country: String = "", val display_name: String= "", val email: String = "", val href: String = "",
             val id: String = "", val birthdate: String = "", val beschrijving: String="", var urlPf: String="",
-                  var Artists : MutableList<Artist?> , var Genres: MutableList<Genre?> , var images: MutableList<SpotifyData.Image>)
+                  var artists : MutableList<Artist> , var genres: MutableList<Genre> , var images: MutableList<SpotifyData.Image>)
 
 
 class SpotifyData(val items: List<Item>){

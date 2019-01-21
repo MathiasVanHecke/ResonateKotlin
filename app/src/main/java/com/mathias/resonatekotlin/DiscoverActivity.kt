@@ -42,6 +42,7 @@ class DiscoverActivity : AppCompatActivity() {
             }
             override fun onFailure(call: Call, e: IOException) {
                 println("Failed to get Arists From Resonate Api")
+                LoadArtists()
             }
         })
     }
@@ -65,6 +66,7 @@ class DiscoverActivity : AppCompatActivity() {
             }
             override fun onFailure(call: Call, e: IOException) {
                 println("Failed to get Arists From Resonate Api")
+                LoadGenres()
             }
         })
     }

@@ -14,6 +14,7 @@ import kotlinx.android.synthetic.main.activity_launch.*
 class LoginToSpotifyActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTitle("Login to Spotify")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login_to_spotify)
 
@@ -33,6 +34,7 @@ class LoginToSpotifyActivity : AppCompatActivity() {
                     val intent = Intent(view?.context, RegisterActivity::class.java)
                     intent.putExtra("BEARER", token)
                     view?.context?.startActivity(intent)
+                    finish()
                 }
             }
         }
