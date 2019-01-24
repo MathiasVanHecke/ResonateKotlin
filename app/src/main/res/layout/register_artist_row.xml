@@ -11,18 +11,17 @@
             android:id="@+id/ivArtistRow"
             app:layout_constraintStart_toStartOf="parent"
             android:cropToPadding="false"
-            android:adjustViewBounds="false" app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="8dp"/>
+            android:adjustViewBounds="false" android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"
+            android:scaleType="centerCrop"/>
     <TextView
             android:text="Artist"
-            android:layout_width="0dp"
+            android:layout_width="335dp"
             android:layout_height="60dp"
             android:id="@+id/tvArtistRow_artist"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
             android:background="@color/ResonateGrey"
             android:textColor="@color/ResonateWhite" android:textSize="18sp" android:textAlignment="center"
             android:gravity="center_vertical"
-            app:layout_constraintTop_toTopOf="@+id/ivArtistRow"
-            app:layout_constraintBottom_toBottomOf="@+id/ivArtistRow"
-            app:layout_constraintStart_toEndOf="@+id/ivArtistRow" android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"/>
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="@+id/ivArtistRow"
+            app:layout_constraintStart_toEndOf="@+id/ivArtistRow" android:layout_marginStart="8dp"/>
 </android.support.constraint.ConstraintLayout>

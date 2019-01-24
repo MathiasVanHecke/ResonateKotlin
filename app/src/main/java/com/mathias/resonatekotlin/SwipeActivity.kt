@@ -90,8 +90,8 @@ class SwipeActivity : AppCompatActivity() {
         }
 
         cardModel.onClickListener = object : CardModel.OnClickListener{
-            override fun OnClickListener() {
-                val intent = Intent(this@SwipeActivity, SwipeProfilePage::class.java)
+           override fun OnClickListener() {
+              val intent = Intent(this@SwipeActivity, SwipeProfilePage::class.java)
                 intent.putExtra("ID", cardModel.description)
                 this@SwipeActivity.startActivity(intent)
             }

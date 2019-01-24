@@ -22,7 +22,7 @@ class LoginToSpotifyActivity : AppCompatActivity() {
         wvSpotifyLogin.settings.loadWithOverviewMode = true
         wvSpotifyLogin.settings.useWideViewPort = true
 
-        wvSpotifyLogin.loadUrl("https://accounts.spotify.com/authorize?client_id=7a788b5554324e06afd076e05e69eaee&redirect_uri=https%3A%2F%2Fexample.com%2Fcallback&scope=user-read-private%20user-read-email%20user-top-read%20user-read-birthdate&response_type=token")
+        wvSpotifyLogin.loadUrl("https://accounts.spotify.com/authorize?client_id=7a788b5554324e06afd076e05e69eaee&redirect_uri=https%3A%2F%2Fexample.com%2Fcallback&scope=user-read-private%20user-read-email%20user-top-read%20user-read-birthdate&response_type=token&show_dialog=true")
 
         wvSpotifyLogin!!.webViewClient = object : WebViewClient() {
             override fun onPageFinished(view: WebView?, url: String?) {
